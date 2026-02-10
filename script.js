@@ -238,27 +238,59 @@ contactForm.addEventListener('submit', async function (e) {
     formStatus.style.display = 'none';
 
     const formData = new FormData(contactForm);
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
     try {
-        const response = await fetch('contact.php', {
-            method: 'POST',
-            body: formData
-        });
+        let success = false;
 
-        const result = await response.json();
+        // On localhost, try PHP backend first
+        if (isLocalhost) {
+            try {
+                const response = await fetch('contact.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.success) {
+                    success = true;
+                }
+            } catch (phpErr) {
+                // PHP not available, will fall through to Web3Forms
+            }
+        }
 
-        if (result.success) {
+        // Use Web3Forms (works on Vercel and as fallback)
+        if (!success) {
+            const web3Data = new FormData();
+            web3Data.append('access_key', '1a1996fb-67d7-443d-a670-4849963236b2');
+            web3Data.append('name', formData.get('name'));
+            web3Data.append('email', formData.get('email'));
+            web3Data.append('subject', formData.get('subject'));
+            web3Data.append('message', formData.get('message'));
+            web3Data.append('from_name', 'Portfolio Contact Form');
+
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: web3Data
+            });
+            const result = await response.json();
+            success = result.success;
+        }
+
+        if (success) {
             formStatus.textContent = '✅ Message sent successfully! I\'ll get back to you soon.';
             formStatus.className = 'form-status success';
+            formStatus.style.display = 'block';
             contactForm.reset();
         } else {
-            formStatus.textContent = '❌ ' + (result.message || 'Something went wrong. Please try again.');
+            formStatus.textContent = '❌ Something went wrong. Please try again.';
             formStatus.className = 'form-status error';
+            formStatus.style.display = 'block';
         }
     } catch (err) {
-        // If PHP is not available, show a friendly message
-        formStatus.textContent = 'ℹ️ Contact form requires PHP backend. Please set up MAMP/XAMPP to enable message submission.';
+        formStatus.textContent = '❌ Failed to send message. Please try again later.';
         formStatus.className = 'form-status error';
+        formStatus.style.display = 'block';
     }
 
     btnText.style.display = 'inline';

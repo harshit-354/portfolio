@@ -575,6 +575,7 @@ require_once 'config.php';
             <button class="tab-btn" data-tab="projects"><i class="fas fa-folder-open"></i> Projects</button>
             <button class="tab-btn" data-tab="skills"><i class="fas fa-tools"></i> Skills</button>
             <button class="tab-btn" data-tab="education"><i class="fas fa-graduation-cap"></i> Education</button>
+            <button class="tab-btn" data-tab="settings"><i class="fas fa-cog"></i> Settings</button>
         </div>
         <div class="content">
             <!-- Stats -->
@@ -616,6 +617,44 @@ require_once 'config.php';
                 </div>
                 <div id="educationTable"></div>
             </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-panel" id="tab-settings">
+                <div class="panel-header">
+                    <h2><i class="fas fa-cog"></i> Account Settings</h2>
+                </div>
+                <div
+                    style="background:var(--bg2); border:1px solid var(--glass-border); border-radius:var(--radius); padding:30px; max-width:500px;">
+                    <form id="settingsForm" onsubmit="saveCredentials(event)">
+                        <div class="form-row" style="margin-bottom:14px;">
+                            <label
+                                style="display:block; font-size:0.8rem; color:var(--text2); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">Current
+                                Password <span style="color:var(--error)">*</span></label>
+                            <input type="password" name="current_password" required
+                                style="width:100%; padding:10px 14px; background:var(--bg3); border:1.5px solid var(--glass-border); border-radius:8px; color:var(--text); font-family:var(--font); font-size:0.9rem; outline:none;">
+                        </div>
+                        <div class="form-row" style="margin-bottom:14px;">
+                            <label
+                                style="display:block; font-size:0.8rem; color:var(--text2); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">New
+                                Username <span style="color:var(--error)">*</span></label>
+                            <input type="text" name="new_username" id="settingsUsername" required
+                                style="width:100%; padding:10px 14px; background:var(--bg3); border:1.5px solid var(--glass-border); border-radius:8px; color:var(--text); font-family:var(--font); font-size:0.9rem; outline:none;">
+                        </div>
+                        <div class="form-row" style="margin-bottom:14px;">
+                            <label
+                                style="display:block; font-size:0.8rem; color:var(--text2); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">New
+                                Password <span style="color:var(--text3);">(leave blank to keep current)</span></label>
+                            <input type="password" name="new_password"
+                                style="width:100%; padding:10px 14px; background:var(--bg3); border:1.5px solid var(--glass-border); border-radius:8px; color:var(--text); font-family:var(--font); font-size:0.9rem; outline:none;">
+                        </div>
+                        <div id="settingsStatus"
+                            style="display:none; padding:10px; border-radius:8px; margin-bottom:14px; font-size:0.9rem;">
+                        </div>
+                        <button type="submit" class="btn-save" style="width:100%;"><i class="fas fa-save"></i> Save
+                            Changes</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -625,102 +664,81 @@ require_once 'config.php';
     </div>
 
     <script>
-        const API = 'api.php';
+        const         = 'api.php';
 
-        // ===== AUTH =====
-        async function checkAuth() {
+        // ===            =====
+                c function checkAuth() {
             try {
-                const res = await fetch(`${API}?type=check-auth`);
-                const data = await res.json();
-                if (data.authenticated) {
-                    showDashboard();
+                        t res = await fetch(`${API}?typ                `);
+                const                     .json();
+                        da            nticate d) {
+                             showDashboard();
                 }
             } catch (e) { }
-        }
-
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('loginUser').value;
-            const password = document.getElementById('loginPass').value;
-            const errEl = document.getElementById('loginError');
-
-            try {
-                const form = new FormData();
+        }              document.getElemen            oginForm').addEventListener('submit', async (e) => {
+                    eventDefault();
+            const username = document.getElem            'loginUser').value;
+            const password = docum            lement                ass').value;
+            cons                cument.getElementById('loginError')                   try {
+                const form                ata();
                 form.append('username', username);
-                form.append('password', password);
-                const res = await fetch(`${API}?type=login`, { method: 'POST', body: form });
-                const data = await res.json();
+                form                sword', password);
+                              = await fetch(`${AP                    { method: 'POST',                });
+                          data = await res.json();
 
-                if (data.success) {
-                    showDashboard();
-                } else {
-                    errEl.textContent = data.message || 'Login failed.';
-                    errEl.style.display = 'block';
-                }
+                if (data.s                                  showDashboard();
+                               {
+                           rEl.textContent = data.message || 'Login failed.';
+                        errEl.style.display = 'bl                                   
             } catch (e) {
-                errEl.textContent = 'Server error. Is PHP running?';
-                errEl.style.display = 'block';
+                errEl.textContent = 'Server error.            running?';
+                errEl.st            lay = 'block';
             }
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await fetch(`${API}?type=logout`);
-            document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'flex';
-        });
-
-        function showDashboard() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
+        document.ge            ById('logoutBtn').addEventListener('click', async () => {
+                aw        fetch(`${API}?type=logout`)                  document.getElementById('dashboard').style.display = 'non                    document.getElementById('loginScreen').style.display =            
+        })                   function showDashboa         {
+            document.getElementById('loginScreen').s            play = 'none';
+            document.ge                ('dashboard').style.display = 'block';
             loadAll();
         }
 
-        // ===== TABS =====
+        /                 =====
         document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            bt                stener('click', () => {
+                     ocument.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('activ                                     ument.querySelectorAll('.        panel').forEach(p => p.clas            move('active'));
                 btn.classList.add('active');
-                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+                docume            ementById('tab-        btn        aset.tab).classList.add('active');
             });
         });
 
-        // ===== LOAD DATA =====
-        async function loadAll() {
-            await Promise.all([loadMessages(), loadProjects(), loadSkills(), loadEducation()]);
-            updateStats();
+        // =         LOAD DATA =====
+        async f            loadAl                      await Promise.all([loadMessages(), loadProj                Skills(), loadEducation()]);
+                  dateStats();
         }
 
-        let allMessages = [], allProjects = [], allSkills = [], allEducation = [];
+                       ages = [], allProj            ], allS kills = [], allEducation = [];
 
-        async function loadMessages() {
-            try {
-                const res = await fetch(`${API}?type=contacts`);
-                const data = await res.json();
-                allMessages = data.data || [];
-                renderMessages();
-            } catch (e) { allMessages = []; renderMessages(); }
+        asyn        nct        loadMessages() {
+            try                                  es = await fetch(`${API}?type=contacts`);
+                       st data = await res.json();
+                    allMessages = data.data || [];                     renderMessage                      } catch (e) { allMessages = []; renderMess        ();               }
+
+        async functi            roject                      try {
+                const res = await f                ?type=projects`);
+                             a = await res.json();
+                       Projects = data.            [];
+                 renderProjects();
+                  ca        (e) { allProjects = []; renderPro             }
+                       async function loadSkills() {
+            try                       const res = await fetch(`                skills`);
+                const                  res.json();
+                    allSk ills = data.data || [];
+                render        ls(                   } catch (e) {             s = []; renderSkills(); }
         }
 
-        async function loadProjects() {
-            try {
-                const res = await fetch(`${API}?type=projects`);
-                const data = await res.json();
-                allProjects = data.data || [];
-                renderProjects();
-            } catch (e) { allProjects = []; renderProjects(); }
-        }
-
-        async function loadSkills() {
-            try {
-                const res = await fetch(`${API}?type=skills`);
-                const data = await res.json();
-                allSkills = data.data || [];
-                renderSkills();
-            } catch (e) { allSkills = []; renderSkills(); }
-        }
-
-        async function loadEducation() {
+        async function loadEduca            
             try {
                 const res = await fetch(`${API}?type=education`);
                 const data = await res.json();
@@ -732,19 +750,18 @@ require_once 'config.php';
         function updateStats() {
             const unread = allMessages.filter(m => !parseInt(m.is_read)).length;
             document.getElementById('statsGrid').innerHTML = `
-            <div class="stat-card"><div class="stat-number">${allMessages.length}</div><div class="stat-label">Messages</div></div>
-            <div class="stat-card"><div class="stat-number">${unread}</div><div class="stat-label">Unread</div></div>
-            <div class="stat-card"><div class="stat-number">${allProjects.length}</div><div class="stat-label">Projects</div></div>
-            <div class="stat-card"><div class="stat-number">${allSkills.length}</div><div class="stat-label">Skills</div></div>
+            <div class="stat-card"><div class="stat-number">${allMessages.length}</div><div class="stat            Messages</div></div>
+            <div class="stat-card            lass="stat-number">${unread}</div><div class="stat-label">Unread</div></div>
+                <div class="stat-card"><div class="sta        mbe        {allProjects.length}</div><di        ass="stat-label">Projects</d            >
+            <div class="stat-c                ass="stat-number">${allSkills.length}</div><div class="stat-label">Skills</div></div>
         `;
-            const badge = document.getElementById('unreadBadge');
-            if (unread > 0) { badge.textContent = unread; badge.style.display = 'inline'; }
+            const badge = document.                Id('unre            );                 if (unread > 0) { badge.textContent = unread; badge.style.display = 'inline'; }
             else { badge.style.display = 'none'; }
         }
 
-        // ===== RENDER TABLES =====
-        function renderMessages() {
-            if (allMessages.length === 0) {
+        // =            DER TABLES =====
+        fu                rMessages() {
+            if (allMes                 === 0) {
                 document.getElementById('messagesTable').innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i>No messages yet.</div>';
                 return;
             }
@@ -755,88 +772,77 @@ require_once 'config.php';
                 <td><span class="${isRead ? 'badge-read' : 'badge-unread'}">${isRead ? 'Read' : 'New'}</span></td>
                 <td>${m.name}</td><td>${m.email}</td><td>${m.subject}</td>
                 <td>${new Date(m.created_at).toLocaleDateString()}</td>
-                <td>
-                    <button class="action-btn" onclick="viewMessage(${m.id})" title="View"><i class="fas fa-eye"></i></button>
-                    ${!isRead ? `<button class="action-btn" onclick="markRead(${m.id})" title="Mark Read"><i class="fas fa-check"></i></button>` : ''}
-                    <button class="action-btn danger" onclick="deleteItem('contacts', ${m.id})" title="Delete"><i class="fas fa-trash"></i></button>
+                                                 <button class="action-b            ick="viewMessage(${m.id})" title="View"><i class="fas fa-ey        /i>        tton>
+                    ${            ? `<button class="action-btn" on                ead(${m.id})" title="Mark Read"><i class="fas fa-check"></i></button>` : ''}
+                    <button class="action-btn danger" onclick                ('contac            .i            le="Delete"><i class="fas fa-trash"></i></button>
                 </td>
             </tr>`;
             });
-            html += '</tbody></table>';
-            document.getElementById('messagesTable').innerHTML = html;
+            html += '            </table>';
+            docu                entById('messagesTable').innerHTML = html;
         }
 
         function renderProjects() {
             if (allProjects.length === 0) {
-                document.getElementById('projectsTable').innerHTML = '<div class="empty-state"><i class="fas fa-folder-open"></i>No projects yet.</div>';
+                document.getElementById('projectsTable').innerHTML = '<div class="e mpty-state"><i class="fas fa-folder-open"></i>No projects yet.</div>';
                 return;
             }
-            let html = `<table class="data-table"><thead><tr><th>Order</th><th>Title</th><th>Tags</th><th>Actions</th></tr></thead><tbody>`;
-            allProjects.forEach(p => {
+            let html = `<table class="data-table"><thead><tr><th>Order</th><th>Title</th><th>Tags</th><th>Actions</t            /the            y>`;
+            allProjects            (p => {
                 html += `<tr>
-                <td>${p.display_order}</td><td>${p.title}</td><td>${p.tags}</td>
-                <td>
-                    <button class="action-btn" onclick='editProject(${JSON.stringify(p).replace(/'/g, "&#39;")})'><i class="fas fa-edit"></i></button>
-                    <button class="action-btn danger" onclick="deleteItem('projects', ${p.id})"><i class="fas fa-trash"></i></button>
+                <td>$        isp        order}</td><td>${p.title}<            ${p.tags}</td>
+                                             <button class="action-btn" onclick='editProject(${JSON.stringify(p).replace(/'/g, "&#39;")})'><i class="fas fa-edi                ton>
+                             button class="action-btn danger" onclick="deleteItem('projects', ${p.id})"><i class="fas fa-trash"></i></button>
                 </td>
-            </tr>`;
+                       
             });
-            html += '</tbody></table>';
+                        '</tbody></table>';
             document.getElementById('projectsTable').innerHTML = html;
         }
 
         function renderSkills() {
             if (allSkills.length === 0) {
-                document.getElementById('skillsTable').innerHTML = '<div class="empty-state"><i class="fas fa-tools"></i>No skills yet.</div>';
+                document.getElementById('skillsTable').innerHTML = '<div class="empty-state"><i class="f as fa-tools"></i>No skills yet.</div>';
                 return;
             }
-            let html = `<table class="data-table"><thead><tr><th>Order</th><th>Name</th><th>Category</th><th>Level</th><th>Actions</th></tr></thead><tbody>`;
-            allSkills.forEach(s => {
-                html += `<tr>
-                <td>${s.display_order}</td><td><i class="${s.icon_class}"></i> ${s.name}</td><td>${s.category}</td><td>${s.proficiency_level}%</td>
+            let html = `<table class="data-table"><thead><tr><th>Order</th><th>Name</th><th>Category</th><th>Level</th><th>Actions</th></tr></the            y>`;                 allSkills.forEach(s =>                       html += `<tr>
+                <td>${s.display_o        }</        td><i class="${s.icon_class}"            s.name}</td><td>${s.category}</td                ficiency_level}%</td>
                 <td>
-                    <button class="action-btn" onclick='editSkill(${JSON.stringify(s).replace(/'/g, "&#39;")})'><i class="fas fa-edit"></i></button>
+                    <button class="action-btn" onclick='editSkill(${JSON.stringify(s).replace(/'/g, "&#39;")                ="fas fa            /i            n>
                     <button class="action-btn danger" onclick="deleteItem('skills', ${s.id})"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>`;
-            });
-            html += '</tbody></table>';
+                                      </tr>`;
+                                html += '</tbody></table>';
             document.getElementById('skillsTable').innerHTML = html;
         }
 
         function renderEducation() {
             if (allEducation.length === 0) {
-                document.getElementById('educationTable').innerHTML = '<div class="empty-state"><i class="fas fa-graduation-cap"></i>No education entries yet.</div>';
+                document.getElementById('educatio nTable').innerHTML = '<div class="empty-state"><i class="fas fa-graduation-cap"></i>No education entries yet.</div>';
                 return;
             }
-            let html = `<table class="data-table"><thead><tr><th>Order</th><th>Degree</th><th>Institution</th><th>Years</th><th>Actions</th></tr></thead><tbody>`;
-            allEducation.forEach(e => {
-                html += `<tr>
-                <td>${e.display_order}</td><td>${e.degree}</td><td>${e.institution}</td><td>${e.year_range}</td>
+            let html = `<table class="data-table"><thead><tr><th>Order            >Deg            <th>Institution</th><th>Year            h>Actions</th></tr></thead><tbody>`;
+            allEducatio        rEa         => {
+                html +        tr>
+                <td>${e            _order}</td><td>${e.degree}</td><td>${e.insti            /td><td>${e.year            /td>
                 <td>
-                    <button class="action-btn" onclick='editEdu(${JSON.stringify(e).replace(/'/g, "&#39;")})'><i class="fas fa-edit"></i></button>
-                    <button class="action-btn danger" onclick="deleteItem('education', ${e.id})"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>`;
+                    <button class="action-btn" onclick='editEdu(${JSON.stri        y(e        place(/'/g, "&#39;")})'><i cla            fa-edit"></i></button>
+                    <button class="actio n-btn danger" o nclick="deleteItem ('education', ${e.id})">< i  class="            rash"></i></button>
+                      td>                 </tr>`;
             });
-            html += '</tbody></table>';
-            document.getElementById('educationTable').innerHTML = html;
+                 tml += '</tbody></table>';
+            document.getElementById('educ            le').innerHTML = html;
         }
 
-        // ===== VIEW MESSAGE =====
-        function viewMessage(id) {
-            const m = allMessages.find(x => x.id == id);
+        // ===== VIEW MESSAGE ===               function        wMe        e(id) {
+            co        m = allMessages.find(x =            = id);
             if (!m) return;
-            alert(`From: ${m.name} <${m.email}>\nSubject: ${m.subject}\nDate: ${m.created_at}\n\n${m.message}`);
-        }
-
-        async function markRead(id) {
-            await fetch(`${API}?type=contacts`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+            alert(`From: ${m.na        <${        ail}>\nSubject: ${m.subject}\nDate: ${m.created_at}\n\n${m.message}`);
+                       async function markRead(id) {
+                   it fe        `${API}?type=contacts`, { method: 'PUT',            : { 'Content-Ty            plication/json' }, body: J                y({ id }) });
             loadMessages().then(updateStats);
         }
 
-        async function deleteItem(type, id) {
-            if (!confirm('Are you sure you want to delete this item?')) return;
+        async function deleteItem(type,                       if (!confirm('Are you sure you want to delete this item?')) return;
             await fetch(`${API}?type=${type}&id=${id}`, { method: 'DELETE' });
             loadAll();
         }
@@ -859,28 +865,28 @@ require_once 'config.php';
                 <form id="modalForm" onsubmit="saveProject(event)">
                     <input type="hidden" name="id" value="${d.id}">
                     <div class="form-row"><label>Title</label><input name="title" value="${d.title}" required></div>
-                    <div class="form-row"><label>Description</label><textarea name="description" required>${d.description}</textarea></div>
-                    <div class="form-row"><label>Tags (comma separated)</label><input name="tags" value="${d.tags}"></div>
-                    <div class="form-row"><label>Live Link</label><input name="link" value="${d.link}"></div>
+                    <div class="form-row"><label>Description</label><textarea name="description" requir            escription}</textarea></div>
+                        <div class="form-row"><label>Tags (comma separated)</label><input name="tags" value="${d.tags}"></div>
+                                 s="form-row"><label>Live Link</label><input name="link" value="${d.link}"></div>
                     <div class="form-row"><label>GitHub URL</label><input name="github_url" value="${d.github_url}"></div>
                     <div class="form-row"><label>Display Order</label><input type="number" name="display_order" value="${d.display_order}"></div>
                     <div class="modal-actions"><button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button><button type="submit" class="btn-save">Save</button></div>
                 </form>`;
             } else if (type === 'skill') {
-                const d = data || { id: 0, name: '', icon_class: 'fas fa-code', category: 'other', proficiency_level: 50, display_order: 0 };
-                html = `
+                const d = d ata  || { id:  0 , name: '' ,  icon_class: 'fas fa-code', category: 'other', proficiency_level: 50, display_order: 0  };
+                   html  =  `
                 <h3>${d.id ? 'Edit' : 'Add'} Skill</h3>
-                <form id="modalForm" onsubmit="saveSkill(event)">
+                <form id="m oda lForm" on s ubmit="sav e Skill(event)">
                     <input type="hidden" name="id" value="${d.id}">
-                    <div class="form-row"><label>Name</label><input name="name" value="${d.name}" required></div>
-                    <div class="form-row"><label>Icon Class (Font Awesome)</label><input name="icon_class" value="${d.icon_class}"></div>
+                        < d iv class="form-row"><label>Name</label><input name="name" value="${d.name}" requi red ></div> 
+                       <div class="form-row"><label>Icon Class (Font Awesome)</label><input name="icon_class" value="${d.icon_class}"></div>
                     <div class="form-row"><label>Category</label>
                         <select name="category">
                             <option value="language" ${d.category === 'language' ? 'selected' : ''}>Language</option>
                             <option value="frontend" ${d.category === 'frontend' ? 'selected' : ''}>Frontend</option>
                             <option value="backend" ${d.category === 'backend' ? 'selected' : ''}>Backend</option>
-                            <option value="tools" ${d.category === 'tools' ? 'selected' : ''}>Tools</option>
-                            <option value="other" ${d.category === 'other' ? 'selected' : ''}>Other</option>
+                                        value="tools" ${d.category === 'too                ted' : ''}>Tools</option>
+                            <option value="other" ${d.category === 'other' ? 'selec                ther</option>
                         </select>
                     </div>
                     <div class="form-row"><label>Proficiency Level (0-100)</label><input type="number" name="proficiency_level" value="${d.proficiency_level}" min="0" max="100"></div>
@@ -893,21 +899,16 @@ require_once 'config.php';
                 <h3>${d.id ? 'Edit' : 'Add'} Education</h3>
                 <form id="modalForm" onsubmit="saveEducation(event)">
                     <input type="hidden" name="id" value="${d.id}">
-                    <div class="form-row"><label>Institution</label><input name="institution" value="${d.institution}" required></div>
-                    <div class="form-row"><label>Degree / Title</label><input name="degree" value="${d.degree}" required></div>
-                    <div class="form-row"><label>Year Range</label><input name="year_range" value="${d.year_range}" required placeholder="e.g. 2023 — Present"></div>
-                    <div class="form-row"><label>Description</label><textarea name="description">${d.description}</textarea></div>
-                    <div class="form-row"><label>Display Order</label><input type="number" name="display_order" value="${d.display_order}"></div>
-                    <div class="modal-actions"><button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button><button type="submit" class="btn-save">Save</button></div>
-                </form>`;
+                    <div class="form-row"><label>Institution</label><input name="institution" value="${d.institut            qu            iv>
+                    <div class="form-row"><label>Degre            e</label><input name="degree" value="${d.degree}" required></di                               <div class="form-row"><label>Year Range</        l><input name="year_range" value="${d.year_range}        quired placeholder="e.g. 2023 — Present"></div>
+                        <div class="form-r        <label>Description</label><texta            ="description">${d.d            on}</textarea></div>
+                             class="form-row"><label>Display Order</label><input type="number" na            lay_order" value="${d.display_order}"></div>
+                            <div class="modal-actio            ton type="button" cl            -cancel" onclick="closeModal()">Cance            n><button type="submit" class="btn-save">Save</button></div>
+                    </form>`;
             }
-            document.getElementById('modalContent').innerHTML = html;
-            document.getElementById('modalOverlay').classList.add('open');
-        }
+            document        El        tById('modalContent').innerHTML =                       document.g            tById('modalOverlay').classList.add('                    }
 
-        function editProject(p) { openModal('project', p); }
-        function editSkill(s) { openModal('skill', s); }
-        function editEdu(e) { openModal('education', e); }
+        function editProject(p) { openModal('project', p);               function editSkill(s) { openM        ('s        ', s); }             functiontEdopenModal('education', e); }
 
         // ===== SAVE FUNCTIONS =====
         async function saveProject(e) {
@@ -927,6 +928,36 @@ require_once 'config.php';
             const form = new FormData(e.target);
             await fetch(`${API}?type=education`, { method: 'POST', body: form });
             closeModal(); loadEducation();
+        }
+
+        // ===== SETTINGS =====
+        async function saveCredentials(e) {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const statusEl = document.getElementById('settingsStatus');
+            try {
+                const res = await fetch(`${API}?type=update-credentials`, { method: 'POST', body: form });
+                const data = await res.json();
+                statusEl.style.display = 'block';
+                if (data.success) {
+                    statusEl.style.background = 'rgba(34,197,94,0.1)';
+                    statusEl.style.color = 'var(--success)';
+                    statusEl.style.border = '1px solid rgba(34,197,94,0.2)';
+                    statusEl.textContent = '✅ ' + data.message;
+                    e.target.reset();
+                    document.querySelector('.topbar-user').innerHTML = `<i class="fas fa-user-shield"></i> ${form.get('new_username')}`;
+                } else {
+                    statusEl.style.background = 'rgba(239,68,68,0.1)';
+                    statusEl.style.color = 'var(--error)';
+                    statusEl.style.border = '1px solid rgba(239,68,68,0.2)';
+                    statusEl.textContent = '❌ ' + data.message;
+                }
+            } catch (err) {
+                statusEl.style.display = 'block';
+                statusEl.style.background = 'rgba(239,68,68,0.1)';
+                statusEl.style.color = 'var(--error)';
+                statusEl.textContent = '❌ Server error.';
+            }
         }
 
         // Init

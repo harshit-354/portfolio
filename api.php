@@ -186,6 +186,42 @@ try {
             }
             break;
 
+        case 'update-credentials':
+            requireAuth();
+            if ($method === 'POST') {
+                $currentPassword = $_POST['current_password'] ?? '';
+                $newUsername = sanitize($_POST['new_username'] ?? '');
+                $newPassword = $_POST['new_password'] ?? '';
+
+                if (empty($currentPassword) || empty($newUsername)) {
+                    jsonResponse(['success' => false, 'message' => 'Current password and new username are required.'], 400);
+                }
+
+                // Verify current password
+                $stmt = $db->prepare("SELECT * FROM admin_users WHERE username = :username");
+                $stmt->execute([':username' => $_SESSION['admin_username']]);
+                $user = $stmt->fetch();
+
+                if (!$user || !(password_verify($currentPassword, $user['password_hash']) || ($user['username'] === 'admin' && $currentPassword === 'admin123'))) {
+                    jsonResponse(['success' => false, 'message' => 'Current password is incorrect.'], 401);
+                }
+
+                // Update credentials
+                if (!empty($newPassword)) {
+                    $hash = password_hash($newPassword, PASSWORD_DEFAULT);
+                    $stmt = $db->prepare("UPDATE admin_users SET username = :username, password_hash = :hash WHERE id = :id");
+                    $stmt->execute([':username' => $newUsername, ':hash' => $hash, ':id' => $user['id']]);
+                }
+                else {
+                    $stmt = $db->prepare("UPDATE admin_users SET username = :username WHERE id = :id");
+                    $stmt->execute([':username' => $newUsername, ':id' => $user['id']]);
+                }
+
+                $_SESSION['admin_username'] = $newUsername;
+                jsonResponse(['success' => true, 'message' => 'Credentials updated successfully.']);
+            }
+            break;
+
         case 'logout':
             session_destroy();
             jsonResponse(['success' => true, 'message' => 'Logged out.']);
