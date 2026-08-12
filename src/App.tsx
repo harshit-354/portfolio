@@ -181,16 +181,16 @@ function App() {
                 <div className="mt-5 flex items-baseline justify-between gap-4">
                   <h3 className="font-display text-xl font-semibold text-bone transition-colors group-hover:text-ember">TidyBit</h3>
                 </div>
-                <p className="mt-1 text-sm text-bone-dim">Full-stack interactive DSA problem-solving interface with user progress trackers & analytics dashboards.</p>
+                <p className="mt-1 text-sm text-bone-dim">Coding platform with browser-based execution, AST-based intelligent hints, and real-time coding contests.</p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {['React.js', 'Node.js', 'Express', 'MongoDB'].map(t => (
+                  {['React', 'Express.js', 'Supabase', 'Pyodide'].map(t => (
                     <span key={t} className="px-2 py-0.5 text-[0.65rem] font-mono rounded-md bg-surface border border-line text-muted">{t}</span>
                   ))}
                 </div>
               </a>
 
               {/* Project 3 */}
-              <div className="group block cursor-default">
+              <a href="https://github.com/harshit-354/finance-tracker" target="_blank" rel="noopener noreferrer" className="group block">
                 <div className="relative overflow-hidden rounded-xl border border-line bg-surface/50 shadow-sm transition-colors group-hover:border-line/80">
                   <div className="flex items-center gap-1.5 border-b border-line bg-ink/50 px-3.5 py-2.5">
                     <span className="flex items-center gap-1.5">
@@ -198,23 +198,23 @@ function App() {
                       <span className="h-2.5 w-2.5 rounded-full bg-line"></span>
                       <span className="h-2.5 w-2.5 rounded-full bg-line"></span>
                     </span>
-                    <span className="ml-3 truncate font-mono text-[0.65rem] text-muted">ML Model Notebook</span>
+                    <span className="ml-3 truncate font-mono text-[0.65rem] text-muted">Expense Tracker</span>
                   </div>
                   <div className="aspect-[16/10] bg-zinc-900/50 flex flex-col items-center justify-center p-6 text-center">
-                     <div className="text-4xl mb-4">🧠</div>
-                     <p className="text-sm text-muted font-mono">Neural Network Model</p>
+                     <div className="text-4xl mb-4">💰</div>
+                     <p className="text-sm text-muted font-mono">Client-side Web App</p>
                   </div>
                 </div>
                 <div className="mt-5 flex items-baseline justify-between gap-4">
-                  <h3 className="font-display text-xl font-semibold text-bone transition-colors group-hover:text-ember">Image Classifier</h3>
+                  <h3 className="font-display text-xl font-semibold text-bone transition-colors group-hover:text-ember">Expense Tracker</h3>
                 </div>
-                <p className="mt-1 text-sm text-bone-dim">A robust CNN built to classify images, utilizing Dropout regularization, Softmax activations, and data augmentation.</p>
+                <p className="mt-1 text-sm text-bone-dim">Client-side application for recording, categorizing, and analyzing personal expenses with automatic summaries.</p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {['Python', 'TensorFlow', 'Keras', 'NumPy'].map(t => (
+                  {['React.js', 'JavaScript', 'CSS', 'LocalStorage'].map(t => (
                     <span key={t} className="px-2 py-0.5 text-[0.65rem] font-mono rounded-md bg-surface border border-line text-muted">{t}</span>
                   ))}
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </section>
@@ -231,28 +231,36 @@ function App() {
                   <span className="font-mono text-xs text-ember tabular-nums">01</span>Languages
                 </h2>
                 <p className="text-[0.97rem] leading-relaxed text-bone-dim">
-                  C++, Python, JavaScript, TypeScript, HTML/CSS
+                  Python, C++, JavaScript, HTML/CSS
                 </p>
               </div>
               <div className="grid gap-3 border-b border-line py-7 md:grid-cols-[1fr_1.8fr] md:gap-10">
                 <h2 className="flex items-baseline gap-3 font-display text-lg font-semibold text-bone">
-                  <span className="font-mono text-xs text-ember tabular-nums">02</span>Frameworks & Libraries
+                  <span className="font-mono text-xs text-ember tabular-nums">02</span>Frameworks/Libraries
                 </h2>
                 <p className="text-[0.97rem] leading-relaxed text-bone-dim">
-                  Next.js 16, React.js, Node.js, Express.js
+                  React.js, Next.js, Node.js, Express.js, Pandas, NumPy, Matplotlib
                 </p>
               </div>
               <div className="grid gap-3 border-b border-line py-7 md:grid-cols-[1fr_1.8fr] md:gap-10">
                 <h2 className="flex items-baseline gap-3 font-display text-lg font-semibold text-bone">
-                  <span className="font-mono text-xs text-ember tabular-nums">03</span>Databases & Tools
+                  <span className="font-mono text-xs text-ember tabular-nums">03</span>AI & Backend
                 </h2>
                 <p className="text-[0.97rem] leading-relaxed text-bone-dim">
-                  MongoDB, Groq Cloud API, Git, GitHub, Postman, VS Code
+                  Groq API, Pyodide, Supabase, MongoDB, LocalStorage
                 </p>
               </div>
               <div className="grid gap-3 border-b border-line py-7 md:grid-cols-[1fr_1.8fr] md:gap-10">
                 <h2 className="flex items-baseline gap-3 font-display text-lg font-semibold text-bone">
-                  <span className="font-mono text-xs text-ember tabular-nums">04</span>Coursework
+                  <span className="font-mono text-xs text-ember tabular-nums">04</span>Developer Tools
+                </h2>
+                <p className="text-[0.97rem] leading-relaxed text-bone-dim">
+                  Git, GitHub, VS Code, Postman
+                </p>
+              </div>
+              <div className="grid gap-3 border-b border-line py-7 md:grid-cols-[1fr_1.8fr] md:gap-10">
+                <h2 className="flex items-baseline gap-3 font-display text-lg font-semibold text-bone">
+                  <span className="font-mono text-xs text-ember tabular-nums">05</span>Coursework
                 </h2>
                 <p className="text-[0.97rem] leading-relaxed text-bone-dim">
                   Data Structures & Algorithms, Object-Oriented Programming, DBMS, Operating Systems
@@ -277,9 +285,8 @@ function App() {
                   </h2>
                   <div className="mt-3 font-mono text-xs text-muted">2025</div>
                   <ul className="mt-5 list-disc pl-4 text-[0.95rem] text-bone-dim space-y-2 leading-relaxed">
-                    <li>Gained exposure to software development workflows and technology solutions used within the travel technology industry.</li>
-                    <li>Developed an understanding of how software applications support travel operations and business requirements.</li>
-                    <li>Observed software development lifecycle practices, team collaboration, and professional development workflows.</li>
+                    <li>Gained hands-on exposure to software development workflows and technology solutions within the travel technology industry.</li>
+                    <li>Worked with software requirements, application workflows, debugging, collaboration, and software development lifecycle practices.</li>
                   </ul>
                 </div>
                 
@@ -289,6 +296,15 @@ function App() {
                   </h2>
                   <div className="mt-3 font-mono text-xs text-muted flex items-center gap-2">
                     Manipal University Jaipur <span className="h-1 w-1 rounded-full bg-line"></span> 2023 - 2027
+                  </div>
+                </div>
+
+                <div>
+                  <h2 className="font-display text-2xl font-semibold tracking-tight text-bone sm:text-3xl">
+                    All India Senior School Certificate Examination <span className="text-bone-dim text-xl font-normal">(Class XII)</span>
+                  </h2>
+                  <div className="mt-3 font-mono text-xs text-muted flex items-center gap-2">
+                    Delhi Public School, Faridabad <span className="h-1 w-1 rounded-full bg-line"></span> 2022
                   </div>
                 </div>
               </div>
